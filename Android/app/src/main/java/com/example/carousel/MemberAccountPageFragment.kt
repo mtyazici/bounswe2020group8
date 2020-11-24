@@ -35,7 +35,8 @@ class MemberAccountPageFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (readFromFile(context) != ""){
+        val name = readFromFile(context)
+        if (name != ""){
             login = 1
         }
         else{
@@ -57,6 +58,7 @@ class MemberAccountPageFragment : Fragment() {
             val intent = Intent(activity, LoginActivity::class.java)
             startActivityForResult(intent,11)
         }else{
+            view.userName?.text = name
             view.login_user.visibility = View.VISIBLE
         }
         view.login_button.setOnClickListener {
@@ -67,6 +69,7 @@ class MemberAccountPageFragment : Fragment() {
             if (pos == 4) {
                 mGoogleSignInClient?.signOut()
                 view?.guest?.visibility = View.VISIBLE
+                view?.userName?.text = "USERNAME"
                 view?.login_user?.visibility = View.INVISIBLE
                 writeToFile("", context)
                 (activity as DashboardActivity).refresh()
@@ -78,13 +81,15 @@ class MemberAccountPageFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val result = data?.getIntExtra("login", login)
-        val token = data?.getStringExtra("token")
-        writeToFile(token, context)
+        val name = data?.getStringExtra("fullName")
+
+        writeToFile(name, context)
 
         if (result == 1){
             login = result
             view?.guest?.visibility = View.INVISIBLE
             view?.login_user?.visibility = View.VISIBLE
+            view?.userName?.text = name
         }
     }
 
