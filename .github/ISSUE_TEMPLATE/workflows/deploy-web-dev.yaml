@@ -1,5 +1,5 @@
 
-name: Backend-autodeploy-dev
+name: Frontend-autodeploy-dev
 on:
   workflow_dispatch:
   push:
