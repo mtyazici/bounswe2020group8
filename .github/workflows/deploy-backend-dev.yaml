@@ -39,5 +39,6 @@ jobs:
         run: |
           HOSTS=$( grep -oh -E "^([[:digit:]]+\.){3}[[:digit:]]+" dev-hosts)
           ssh-keyscan $HOSTS >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
           ansible-playbook backend-dev.yml -i dev-hosts
           
